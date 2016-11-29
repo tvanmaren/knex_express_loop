@@ -52,7 +52,7 @@ exports.seed = function (knex) {
         artist_id: 4,
         title: 'Sin',
       }]).then(() => {
-        return knex.raw("SELECT setval('tracks_id_seq', (SELECT MAX(id) FROM books))");
+        return knex.raw("SELECT setval('tracks_id_seq', (SELECT MAX(id) FROM tracks))");
       });
     });
 };
