@@ -1,8 +1,11 @@
 'use strict';
-
 var express = require('express');
 var router = express.Router();
 var knex = require('../knex');
+
+const {
+  decamelizeKeys
+} = require('humps');
 
 router.get('/artists', (_req, res, next) => {
   knex('artists')
@@ -16,15 +19,24 @@ router.get('/artists', (_req, res, next) => {
 });
 
 router.get('/artists/:id', (req, res, next) => {
-    knex('artists')
+  knex('artists')
     .where('id', req.params.id)
     .first()
     .then((artist) => {
       if (!artist) {
         return next();
       }
-
       res.send(artist);
+    })
+    .catch((err) => {
+      next(err);
+    });
+});
+
+router.post('/artists', (req, res, next) => {
+  knex('artists').insert(decamelizeKeys(req.body))
+    .then(() => {
+      return res.sendStatus(200);
     })
     .catch((err) => {
       next(err);

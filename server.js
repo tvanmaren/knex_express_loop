@@ -1,3 +1,5 @@
+'use strict';
+
 var express = require('express');
 var bodyParser = require('body-parser');
 var path = require('path');
@@ -7,6 +9,11 @@ var tracks = require('./routes/tracks');
 var app = express();
 
 app.use(express.static(path.join('public')));
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+// parse application/json
+app.use(bodyParser.json());
 
 app.use(artists);
 app.use(tracks);
@@ -29,4 +36,4 @@ app.use((err, _req, res, _next) => {
 
 app.listen('3000', function(){
   console.log('Listening on port 3000');
-})
+});

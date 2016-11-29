@@ -1,7 +1,6 @@
-
 'use strict';
 
-exports.seed = function(knex) {
+exports.seed = function (knex) {
   return knex('tracks').del()
     .then(() => {
       return knex('tracks').insert([{
@@ -52,6 +51,8 @@ exports.seed = function(knex) {
         id: 12,
         artist_id: 4,
         title: 'Sin',
-      }]);
+      }]).then(() => {
+        return knex.raw("SELECT setval('books_id_seq', (SELECT MAX(id) FROM books))");
+      });
     });
 };
